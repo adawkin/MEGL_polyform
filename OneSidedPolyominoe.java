@@ -5,6 +5,8 @@
  */
 package fixedpolyominoeproject;
 
+//ALG appears to be O(N^N), plotted to fit T(N) = 0.0035(N-3.4)^(N-3.4) seconds on "really-awesome-computer" (MEGL)
+
 /**
  *
  * @author james
