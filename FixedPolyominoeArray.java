@@ -23,7 +23,7 @@ public class FixedPolyominoeArray {
         initialCapacity = 1;
         this.row = row;
         this.column = column;
-        data = new int[0][row][column];
+        data = new int[1][row][column];
         this.polySize = polySize;
         generatePermutations();
 		}
@@ -34,10 +34,11 @@ public class FixedPolyominoeArray {
     
     //increase capacity of array
     public void increaseCapacity(){
-        int[][][] data2 = new int[data.length + 1][row][column];
+        int[][][] data2 = new int[2*data.length][row][column];
         
         System.arraycopy(data, 0, data2, 0, data.length);
-        data = data2;}
+        data = data2;
+		}
     
     //checks if first column is empty
     //also checks if first block it comes accross is connected to poly number
@@ -205,17 +206,33 @@ public class FixedPolyominoeArray {
     
     //adds piece to dynamic array
     public void add(int[][] piece) {
+
+				// if this isn't a valid piece, don't bother adding it
         if (isValidPiece(piece) == false){
             return;
 				}
+
+
+				// remove empty rows and columns
         piece = trim(piece);
+
+				// TODO: figure out why we have this
         if (piece.length > piece[0].length){
             return;
-				} //guaranteed to be a rotated version of another piece
+				} 
+
+				//guaranteed to be a rotated version of another piece
         if (isDuplicate(piece) == true){
             return;
 				}
-        increaseCapacity();
+
+				// finally, increase the capacity of the array we're about to insert into
+        if(size >= data.length-1) 
+				{
+					increaseCapacity();
+				}
+
+				// TODO: change the storage mechanism to something with hashing etc., maybe a HashSet or a BTreeSet?
         data[size] = piece;
         size++;
 		}
