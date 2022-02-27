@@ -255,10 +255,7 @@ public class FixedPolyominoeArray {
     public void generatePermutations(){
         int n = row * column; //n(Choose)polysize
 
-				long start = System.nanoTime();
         List<int[]> permutations = generate(n, polySize);
-				long end = System.nanoTime();
-				System.out.println("time: "+((end-start)/1000000)+" ms");
         
         for (int[] permutation: permutations){
             int[][] piece = new int[row][column];
