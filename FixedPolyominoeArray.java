@@ -16,7 +16,7 @@ public class FixedPolyominoeArray {
     int size, initialCapacity, row, column, polySize;
     int[][][] data;
     
-    static int poly = 7;
+    //static int poly = 7;
     
     public FixedPolyominoeArray(int row, int column, int polySize){
         size = 0;
@@ -25,10 +25,12 @@ public class FixedPolyominoeArray {
         this.column = column;
         data = new int[0][row][column];
         this.polySize = polySize;
-        generatePermutations();}
+        generatePermutations();
+		}
     
     public int getSize(){
-        return size;}
+        return size;
+		}
     
     //increase capacity of array
     public void increaseCapacity(){
@@ -41,35 +43,48 @@ public class FixedPolyominoeArray {
     //also checks if first block it comes accross is connected to poly number
     //of bricks
     public boolean firstColumnEmpty(int[][] piece){
+
         for (int i = 0; i < piece.length; i++){
             if (piece[i][0] == 1){
-                boolean[] filledSpaces = 
-                        new boolean[piece.length * piece[0].length];
-                return (isConnected(piece, i, 0, filledSpaces) == polySize);}
+                boolean[] filledSpaces = new boolean[piece.length * piece[0].length];
+                return (isConnected(piece, i, 0, filledSpaces) == polySize);
+						}
         }
         
-        return false;}
+        return false;
+		}
     
     //recursively checks how many bricks are connected
-    public static int isConnected(int[][] piece, int y, int x,
-            boolean[] filledSpaces){
+    public static int isConnected(int[][] piece, int y, int x, boolean[] filledSpaces){
         int total = 1; //total number of blocks connected to orginal block
         filledSpaces[y * piece[0].length + x] = true; //not to double check
         
-        if (y != 0 && piece[y-1][x] == 1  //up
-            && filledSpaces[(y-1) * piece[0].length + x] == false){
-            total += isConnected(piece, y-1, x, filledSpaces);}
-        if (y + 1 != piece.length && piece[y + 1][x] == 1 //left
-            && filledSpaces[(y + 1) * piece[0].length + x] == false){
-            total += isConnected(piece, y + 1, x, filledSpaces);}
-        if (x != 0 && piece[y][x - 1] == 1 //right
-            && filledSpaces[(y) * piece[0].length + x - 1] == false){
-            total += isConnected(piece, y, x - 1, filledSpaces);}
-        if (x + 1 != piece[0].length && piece[y][x + 1] == 1 //down
-            && filledSpaces[(y) * piece[0].length + x + 1] == false){
-            total += isConnected(piece, y, x + 1, filledSpaces);}
+				// up
+        if (y != 0 && piece[y-1][x] == 1 && filledSpaces[(y-1) * piece[0].length + x] == false)
+				{
+            total += isConnected(piece, y-1, x, filledSpaces);
+				}
+				
+				//left
+        if (y + 1 != piece.length && piece[y + 1][x] == 1 && filledSpaces[(y + 1) * piece[0].length + x] == false)
+				{
+            total += isConnected(piece, y + 1, x, filledSpaces);
+				}
+
+				//right
+        if (x != 0 && piece[y][x - 1] == 1 && filledSpaces[(y) * piece[0].length + x - 1] == false)
+				{
+            total += isConnected(piece, y, x - 1, filledSpaces);
+				}
+
+				//down
+        if (x + 1 != piece[0].length && piece[y][x + 1] == 1 && filledSpaces[(y) * piece[0].length + x + 1] == false)
+				{
+            total += isConnected(piece, y, x + 1, filledSpaces);
+				}
         
-        return total;}
+        return total;
+		}
     
     //is the first row empty
     public static boolean firstRowEmpty(int[][] piece){
@@ -189,17 +204,21 @@ public class FixedPolyominoeArray {
         System.out.println();}
     
     //adds piece to dynamic array
-    public void add(int[][] piece){
+    public void add(int[][] piece) {
         if (isValidPiece(piece) == false){
-            return;}
+            return;
+				}
         piece = trim(piece);
         if (piece.length > piece[0].length){
-            return;} //guaranteed to be a rotated version of another piece
+            return;
+				} //guaranteed to be a rotated version of another piece
         if (isDuplicate(piece) == true){
-            return;}
+            return;
+				}
         increaseCapacity();
         data[size] = piece;
-        size++;}
+        size++;
+		}
     
     
     //no longer use function
@@ -218,13 +237,19 @@ public class FixedPolyominoeArray {
     //translates permutations into 2d array
     public void generatePermutations(){
         int n = row * column; //n(Choose)polysize
+
+				long start = System.nanoTime();
         List<int[]> permutations = generate(n, polySize);
+				long end = System.nanoTime();
+				System.out.println("time: "+((end-start)/1000000)+" ms");
         
         for (int[] permutation: permutations){
             int[][] piece = new int[row][column];
             for (int i = 0; i < permutation.length; i++){
                 piece[permutation[i]/column][permutation[i]%column] = 1;}
-            add(piece);}
+            add(piece);
+				}
+
     }
     
     //prints the entire array of pieces
@@ -238,7 +263,8 @@ public class FixedPolyominoeArray {
         List<int[]> combinations = new ArrayList<>();
         helper(combinations, new int[r], 0, n-1, 0);
         
-        return combinations;}
+        return combinations;
+		}
     
     //stolen from the internet, not mine
     private static void helper(List<int[]> combinations, int data[], int start,
@@ -254,13 +280,19 @@ public class FixedPolyominoeArray {
     
     
     public static void main(String[] args) {
+
+				int poly = Integer.parseInt(args[0]);
         
         //Creates array in chunks to not overload the system with permutations
         FixedPolyominoeArray main = new FixedPolyominoeArray(1, poly, poly);
+
         for (int i = 1; 2 * i < poly; i++){
             FixedPolyominoeArray sub = new FixedPolyominoeArray(1 + i, poly - i, poly);
-            for (int j = 0; j < sub.size; j++){
-                    main.add(sub.data[j]);}
-            }
-        System.out.println(main.getSize());}
+            for (int j = 0; j < sub.size; j++) {
+                    main.add(sub.data[j]);
+						}
+				}
+
+        System.out.println(main.getSize());
+		}
 }
