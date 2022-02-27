@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fixedpolyominoeproject;
 
 //ALG appears to be O(N^N), plotted to fit T(N) = 0.0035(N-3.4)^(N-3.4) seconds on "really-awesome-computer" (MEGL)
 
@@ -28,17 +27,20 @@ public class OneSidedPolyominoe {
         this.column = column;
         data = new int[0][row][column];
         this.polySize = polySize;
-        generatePermutations();}
+        generatePermutations();
+		}
 
     public int getSize(){
-        return size;}
+        return size;
+		}
 
     //increase capacity of array
     public void increaseCapacity(){
         int[][][] data2 = new int[data.length + 1][row][column];
 
         System.arraycopy(data, 0, data2, 0, data.length);
-        data = data2;}
+        data = data2;
+		}
 
     //checks if first column is empty
     //also checks if first block it comes accross is connected to poly number
@@ -51,7 +53,8 @@ public class OneSidedPolyominoe {
                 return (isConnected(piece, i, 0, filledSpaces) == polySize);}
         }
 
-        return false;}
+        return false;
+		}
 
     //recursively checks how many bricks are connected
     public static int isConnected(int[][] piece, int y, int x,
@@ -72,7 +75,8 @@ public class OneSidedPolyominoe {
             && filledSpaces[(y) * piece[0].length + x + 1] == false){
             total += isConnected(piece, y, x + 1, filledSpaces);}
 
-        return total;}
+        return total;
+		}
 
     //is the first row empty
     public static boolean firstRowEmpty(int[][] piece){
@@ -81,7 +85,8 @@ public class OneSidedPolyominoe {
                 return false;}
         }
 
-        return true;}
+        return true;
+		}
 
     //is last column empty
     public static boolean lastColumnEmpty(int[][] piece){
@@ -90,7 +95,8 @@ public class OneSidedPolyominoe {
                 return false;}
         }
 
-        return true;}
+        return true;
+		}
 
     //removes last column
     public static int[][] removeLastColumn(int[][] piece){
@@ -100,7 +106,8 @@ public class OneSidedPolyominoe {
            System.arraycopy(piece[i], 0, trimmedPiece[i], 0,
                 trimmedPiece[0].length);}
 
-        return trimmedPiece;}
+        return trimmedPiece;
+		}
 
     //checks if last row is empty
     public static boolean lastRowEmpty(int[][] piece){
@@ -109,7 +116,8 @@ public class OneSidedPolyominoe {
                 return false;}
         }
 
-        return true;}
+        return true;
+		}
 
     //removes last row
     public static int[][] removeLastRow(int[][] piece){
@@ -119,7 +127,8 @@ public class OneSidedPolyominoe {
            System.arraycopy(piece[i], 0, trimmedPiece[i], 0,
                 trimmedPiece[0].length);}
 
-        return trimmedPiece;}
+        return trimmedPiece;
+		}
 
     //gets rid of extra rows and columns
     public static int[][] trim(int[][] piece){
@@ -128,13 +137,15 @@ public class OneSidedPolyominoe {
         while (lastRowEmpty(piece) == true){
             piece = removeLastRow(piece);}
 
-        return piece;}
+        return piece;
+		}
 
     //returns false if piece is not connected
     public boolean isValidPiece(int[][] piece){
         if (firstRowEmpty(piece) == true){//premptively removes duplicates
             return false;}
-        return firstColumnEmpty(piece) != false;}
+        return firstColumnEmpty(piece) != false;
+		}
 
     //rotates
     public static int[][] transform(int[][] piece){
@@ -145,7 +156,8 @@ public class OneSidedPolyominoe {
                 newPiece[piece[0].length - 1 - j][i] = piece[i][j];}
         }
 
-        return newPiece;}
+        return newPiece;
+		}
 
     //checks if two pieces are equal
     public static boolean checkEqual(int[][] newPiece, int[][] data){
@@ -159,7 +171,8 @@ public class OneSidedPolyominoe {
             }
         }
 
-        return true;}
+        return true;
+		}
 
     //check all previous entries for current piece
     public boolean checkPrev(int[][] newPiece){
