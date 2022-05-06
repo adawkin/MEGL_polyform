@@ -54,13 +54,26 @@ fn update_perimeter(mino: &Polyomino, perimeter: &mut HashSet<(i32, i32, i32)>, 
     let visited = HashSet::<(i32, i32, i32)>::new();
 }
 
-fn cut_validity_algorithm(mino: Polyomino, removed_piece: (i32, i32, i32)) {
+// the goal is connect the outer perimeter to itself through the removed piece. If we can do this,
+// validity is broken
+fn cut_validity_algorithm(mino: Polyomino, removed_piece: (i32, i32, i32), perimeter: &HashSet<(i32, i32, i32)>) {
     // This algorithm uses the removed piece to see if there's a path it can line that separates
     // the two polyforms. when I came up with this algorithm, I figured it would run a lot faster
     // because the distance from a piece to the perimeter is relatively short and doesn't require
     // full DFS of the polyomino
     //
-    // if we can find a path to the perimeter 
+    // for the 2-d case, if I can draw a path from one end of the perimeter to another end of the
+    // outer perimeter, we know that the polyomino is broken. If we can't make such a path, then we
+    // are in a hole and the polyomino is sealed, or we removed a piece that did not separate the
+    // polyform (for example, the end of a stick polyomino). 
+    //
+    // For the 3d case I'd have to make a 2d path. This is where the challenge lies vs the 2d case
+    // where I have to make a 1d line. That 2d path may have to bend etc.
+    //
+    // The base case happens when we pass the outer perimeter or go past the highest/lowest x/y/z
+    // values of the polyform
+    //
+    // Since we maintain the perimeter as we go, time complexity of this algorithm can be very low
 }
 
 // abandoned for now, in favor of cut validity. should be revived so we can benchmark the two
